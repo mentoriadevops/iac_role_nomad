@@ -9,3 +9,7 @@
     repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ansible_facts['distribution_release']}} main"
     state: present
     update_cache: yes
+- name: "Instalando Nomad"
+  apt: 
+    name: "nomad={{nomad_version}}"
+    state: present 
