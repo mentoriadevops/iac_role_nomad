@@ -1,37 +1,38 @@
-# Template Role Ansible
+Role Name
+=========
 
-Esse projeto tem a finalidade de ser um template para futuras criações de projetos que usem [ansible](https://docs.ansible.com/) e [molecule](https://molecule.readthedocs.io/en/latest/) (para teste do playbook).
+A brief description of the role goes here.
 
-## Dependências
-Para realizar os teste localmente é necessário a instalação das seguintes dependências:
+Requirements
+------------
 
-* [Python](https://www.python.org/downloads/)
-* [Molecule](https://molecule.readthedocs.io/en/latest/installation.html)
+Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
 
-## Preparando o ambiente
+Role Variables
+--------------
 
-Crie um ambiente python
+A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
 
-    $ python3 -m venv .venv
+Dependencies
+------------
 
-Ative o ambiente
+A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
-    $ source .venv/bin/active
+Example Playbook
+----------------
 
-Instale dentro do ambiente o molecule (e suas dependencias) e o [pytest-testinfra](https://testinfra.readthedocs.io/en/latest/)
+Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    (venv)$ python3 -m pip install "molecule[docker,lint]" pytest-testinfra
+    - hosts: servers
+      roles:
+         - { role: username.rolename, x: 42 }
 
-## Executando
+License
+-------
 
-    (venv)$ molecule test
+BSD
 
-Para realizar teste rápido após alguma modificação
+Author Information
+------------------
 
-    (venv)$ molecule create
-    (venv)$ molecule converge
-    (venv)$ molecule verify
-
-Ao termino do teste, destrua o ambiente
-
-    (venv)$ molecule destroy
+An optional section for the role authors to include contact information, or a website (HTML is not allowed).
