@@ -1,2 +1,11 @@
 ---
 # tasks file for iac-role-nomad
+- name: "Adcionando chave apt da HashCorp"
+  apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    state: present
+- name: "Instalando repositório HashCorp"
+  apt_repository:
+    repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ansible_facts['distribution_release']}} main"
+    state: present
+    update_cache: yes
