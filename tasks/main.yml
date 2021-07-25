@@ -13,3 +13,13 @@
   apt: 
     name: "nomad={{nomad_version}}"
     state: present 
+- name: "Crianfo o arquivo de configuração"
+  template:
+    src: "{{item}}"
+    dest: /etc/nomad.d/
+    owner: "{{nomad_user}}"
+    group: "{{nomad_group}}"
+    mode: 0644
+  with_items:
+    - client.hcl.j2
+    - server.hcl.j2
