@@ -1,38 +1,37 @@
-Role Name
-=========
+Template Role Ansible
 
-A brief description of the role goes here.
+Esse projeto tem a finalidade de ser um template para futuras criações de projetos que usem ansible e molecule (para teste do playbook).
+Dependências
 
-Requirements
-------------
+Para realizar os teste localmente é necessário a instalação das seguintes dependências:
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+    Python
+    Molecule
 
-Role Variables
---------------
+Preparando o ambiente
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Crie um ambiente python
 
-Dependencies
-------------
+$ python3 -m venv .venv
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Ative o ambiente
 
-Example Playbook
-----------------
+$ source .venv/bin/active
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Instale dentro do ambiente o molecule (e suas dependencias) e o pytest-testinfra
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+(venv)$ python3 -m pip install - r requirements.txt
 
-License
--------
+Executando (Destroy, Create, Test, Converge, Verify)
 
-BSD
+(venv)$ molecule check
 
-Author Information
-------------------
+Para realizar teste rápido após alguma modificação
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+(venv)$ molecule create
+(venv)$ molecule converge
+(venv)$ molecule verify
+
+Ao termino do teste, destrua o ambiente
+
+(venv)$ molecule destroy
