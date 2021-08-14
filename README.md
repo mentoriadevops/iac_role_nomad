@@ -19,10 +19,12 @@ Ative o ambiente
 $ source .venv/bin/active
 
 Instale dentro do ambiente o molecule (e suas dependencias) e o pytest-testinfra
-
+```
+Para construir o ambiente python e instalar todas as dependencias necessárias para executar esta role use o arquivo de dependências 'requirements.txt' como mostrado a baixo. 
+```
 (venv)$ python3 -m pip install - r requirements.txt
 
-Executando (Destroy, Create, Test, Converge, Verify)
+Executando todos os processo (Destroy, Create, Test, Converge, Verify)
 
 (venv)$ molecule check
 
