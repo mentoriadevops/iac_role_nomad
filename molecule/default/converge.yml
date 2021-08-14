@@ -11,5 +11,3 @@
     - name: "Include iac-role-nomad"
       include_role:
         name: "iac-role-nomad"
-    
-
