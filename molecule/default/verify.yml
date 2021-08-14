@@ -4,7 +4,88 @@
 - name: Verify
   hosts: all
   gather_facts: false
+  vars_files:
+    - ../../defaults/main.yml
   tasks:
-  - name: Example assertion
-    assert:
-      that: true
+    - name: "Roda um comando do Nomad"
+      command: "nomad -version"
+      register: nomad_version_output
+    - name: "Verificar que o Nomad está instalado com a versão correta"
+      assert:
+        that:
+          - nomad_version_output.rc == 0
+          - "'{{nomad_version}}' in nomad_version_output.stdout"
+
+    - name: "Ler diretório de configuração do Nomad"
+      stat:
+        path: /etc/nomad.d/
+      register: nomad_config_dir_output
+    - name: "Verificar o diretório de configuração do Nomad"
+      assert:
+        that:
+          - nomad_config_dir_output.stat.exists
+          - nomad_config_dir_output.stat.isdir
+          - "nomad_config_dir_output.stat.pw_name == '{{nomad_user}}'"
+          - "nomad_config_dir_output.stat.gr_name == '{{nomad_group}}'"
+
+    - name: "Ler arquivos padrão de configuração do Nomad"
+      stat:
+        path: "/etc/nomad.d/{{item}}"
+      loop:
+        - nomad.hcl
+        - nomad.env
+      register: nomad_default_config_files_output
+    - name: "Verificar que os arquivos padrão de configuração do Nomad foram removidos"
+      assert:
+        that:
+          - "not nomad_default_config_files_output.results[{{index}}].stat.exists"
+      loop:
+        - nomad.hcl
+        - nomad.env
+      loop_control:
+        index_var: index
+
+    - name: "Ler arquivos de configuração do Nomad"
+      stat:
+        path: "/etc/nomad.d/{{item}}"
+      loop:
+        - client.hcl.j2
+        - server.hcl.j2
+      register: nomad_config_files_output
+    - name: "Verificar os arquivos de configuração do Nomad"
+      assert:
+        that:
+          - "nomad_config_files_output.results[{{index}}].stat.exists"
+          - "nomad_config_files_output.results[{{index}}].stat.pw_name == '{{nomad_user}}'"
+          - "nomad_config_files_output.results[{{index}}].stat.gr_name == '{{nomad_group}}'"
+      loop:
+        - client.hcl.j2
+        - server.hcl.j2
+      loop_control:
+        index_var: index
+
+    - name: "Ler conteúdo dos arquivos de configuração"
+      slurp:
+        src: "/etc/nomad.d/{{item}}"
+      loop:
+        - client.hcl.j2
+        - server.hcl.j2
+      register: nomad_config_file_content
+    - debug:
+        msg: "{{ nomad_config_file_content.results[0] }}"
+    - name: "Verificar conteúdo do arquivo de configuração do client"
+      assert:
+        that:
+          - "{{ nomad_config_file_content.results[0]['content'] | b64decode | regex_search('data_dir\\s+=\\s+\".+\"') | length }} > 0"
+
+    - name: "Ler data_dir do Nomad"
+      stat:
+        path: /opt/nomad/data
+      register: nomad_data_dir_output
+    - name: "Verificar que o diretório de dados do Nomad existe"
+      assert:
+        that:
+          - nomad_data_dir_output.stat.exists
+          - nomad_data_dir_output.stat.isdir
+          - "nomad_data_dir_output.stat.gr_name == '{{nomad_group}}'"
+          - "nomad_data_dir_output.stat.pw_name == '{{nomad_user}}'"
