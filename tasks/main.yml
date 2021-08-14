@@ -6,26 +6,26 @@
     state: present
 - name: "Instalando repositório HashiCorp"
   apt_repository:
-    repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ansible_facts['distribution_release']}} main"
+    repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_facts['distribution_release'] }} main"
     state: present
     update_cache: yes
 - name: "Instalando Nomad"
   apt:
-    name: "nomad={{nomad_version}}"
+    name: "nomad={{ nomad_version }}"
     state: present
 - name: "Removendo arquivos padrão de exemplo"
   file:
-    path: "/etc/nomad.d/{{item}}"
+    path: "/etc/nomad.d/{{ item }}"
     state: absent
   loop:
     - nomad.hcl
     - nomad.env
 - name: "Criando o arquivo de configuração"
   template:
-    src: "{{item}}"
+    src: "{{ item }}"
     dest: /etc/nomad.d/
-    owner: "{{nomad_user}}"
-    group: "{{nomad_group}}"
+    owner: "{{ nomad_user }}"
+    group: "{{ nomad_group }}"
     mode: 0644
   loop:
     - client.hcl.j2
