@@ -89,3 +89,4 @@
           - nomad_data_dir_output.stat.isdir
           - "nomad_data_dir_output.stat.gr_name == '{{nomad_group}}'"
           - "nomad_data_dir_output.stat.pw_name == '{{nomad_user}}'"
+
