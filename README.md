@@ -1,6 +1,6 @@
 # Template Role Ansible
 
-![Pipeline Status](https://github.com/mentoriaiac/template-role-ansible/actions/workflows/ci.yml/badge.svg) 
+![Pipeline Status](https://github.com/mentoriaiac/iac-role-nomad/actions/workflows/ci.yml/badge.svg) 
 
 Esse projeto tem a finalidade de ser uma Role Ansible para instalar o Nomad.
 
