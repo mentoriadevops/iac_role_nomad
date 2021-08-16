@@ -1,0 +1,33 @@
+---
+# tasks file for iac-role-nomad
+- name: "Adicionando chave apt da HashiCorp"
+  apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    state: present
+- name: "Instalando repositório HashiCorp"
+  apt_repository:
+    repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_facts['distribution_release'] }} main"
+    state: present
+    update_cache: yes
+- name: "Instalando Nomad"
+  apt:
+    name: "nomad={{ nomad_version }}"
+    state: present
+- name: "Removendo arquivos padrão de exemplo"
+  file:
+    path: "/etc/nomad.d/{{ item }}"
+    state: absent
+  loop:
+    - nomad.hcl
+    - nomad.env
+- name: "Criando o arquivo de configuração"
+  template:
+    src: "{{ item }}"
+    dest: /etc/nomad.d/
+    owner: "{{ nomad_user }}"
+    group: "{{ nomad_group }}"
+    mode: 0644
+  loop:
+    - client.hcl.j2
+    - server.hcl.j2
+
