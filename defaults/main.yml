@@ -3,3 +3,6 @@
 nomad_version: "1.1.2"
 nomad_user: nomad
 nomad_group: nomad
+# nomad-cni-plugins
+nomad_cni_version: '1.0.0'
+nomad_cni_url: "https://github.com/containernetworking/plugins/releases/download/v{{ nomad_cni_version }}/cni-plugins-linux-amd64-v{{nomad_cni_version }}.tgz"
