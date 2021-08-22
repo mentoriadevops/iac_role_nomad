@@ -36,7 +36,7 @@ Uma vez criado seu ambiente virtual, precisamos inicializá-lo, para tal, execut
 > source o-nome-da-sua-env/bin/activate
 
 
-Se tudo der certo, seu pronpt será modificado e iniciará aparentemente assim:
+Se tudo der certo, seu prompt será modificado e iniciará aparentemente assim:
 
 > (o-nome-da-sua-env)$
 
@@ -64,7 +64,7 @@ Para realizar teste rápido após alguma modificação execute a seguinte sequê
 > (o-nome-da-sua-env)$ molecule verify
 
 
-Ao termino do teste, destrua o ambiente
+Ao termino do teste, destrua o ambiente:
 
 > (o-nome-da-sua-env)$ molecule destroy
 
@@ -72,7 +72,7 @@ Ao termino do teste, destrua o ambiente
 > (o-nome-da-sua-env)$ molecule check
 
 
-Para realizar teste rápido após alguma modificação
+Para realizar teste rápido após alguma modificação:
 
 > (o-nome-da-sua-env)$ molecule create
 
@@ -81,6 +81,6 @@ Para realizar teste rápido após alguma modificação
 > (o-nome-da-sua-env)$ molecule verify
 
 
-Ao termino do teste, destrua o ambiente
+Ao termino do teste, destrua o ambiente:
 
 > (o-nome-da-sua-env)$ molecule destroy
