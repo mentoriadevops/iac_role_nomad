@@ -31,3 +31,25 @@
     - client.hcl.j2
     - server.hcl.j2
 
+# CNI-plugin
+
+- name: " Criando Diretorio para os plugins-CNI"
+  ansible.builtin.file:
+    path: /opt/cni/bin
+    state: directory
+- name: "CNI-plugin | unarchive"
+  ansible.builtin.unarchive:
+    src: "{{ nomad_cni_url }}"
+    dest: /opt/cni/bin
+    creates: /opt/cni/bin/bridge
+    remote_src: yes
+    mode: '0755'
+- name: " CNI sysctl"
+  ansible.posix.sysctl:
+    name: "{{ item }}"
+    value: "1"
+    sysctl_file: /etc/sysctl.d/10-net-bridge.conf
+  loop:
+    - "net.bridge.bridge-nf-call-arptables"
+    - "net.bridge.bridge-nf-call-ip6tables"
+    - "net.bridge.bridge-nf-call-iptables"

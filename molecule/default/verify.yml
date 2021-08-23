@@ -71,8 +71,6 @@
         - client.hcl.j2
         - server.hcl.j2
       register: nomad_config_file_content
-    - debug:
-        msg: "{{ nomad_config_file_content.results[0] }}"
     - name: "Verificar conteúdo do arquivo de configuração do client"
       assert:
         that:
@@ -89,4 +87,23 @@
           - nomad_data_dir_output.stat.isdir
           - "nomad_data_dir_output.stat.gr_name == '{{nomad_group}}'"
           - "nomad_data_dir_output.stat.pw_name == '{{nomad_user}}'"
+    - name: "Ler CNI-plugin"
+      stat:
+        path: /opt/cni/bin/bridge
+      register: nomad_cni_plugin_output
+    - name: " Verificar cni-plugin"
+      assert:
+        that:
+          - nomad_cni_plugin_output.stat.exists
+          - nomad_cni_plugin_output.stat.mode == '0755'
+    - name: "Ler conteúdo do arquivo de configuração 10-net-bridge.conf"
+      slurp:
+        src: "/etc/sysctl.d/10-net-bridge.conf"
+      register: nomad_net_bridge_content
+    - name: "Verificar conteúdo do arquivo de configuração do 10-net-bridge"
+      assert:
+        that:
+          - "{{ nomad_net_bridge_content.content | b64decode | regex_search('net.bridge.bridge-nf-call-arptables\\s*=\\s*1') | length }} > 0"
+          - "{{ nomad_net_bridge_content.content | b64decode | regex_search('net.bridge.bridge-nf-call-ip6tables\\s*=\\s*1') | length }} > 0"
+          - "{{ nomad_net_bridge_content.content | b64decode | regex_search('net.bridge.bridge-nf-call-iptables\\s*=\\s*1') | length }} > 0"
 
