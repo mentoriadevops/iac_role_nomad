@@ -33,7 +33,6 @@
         path: "/etc/nomad.d/{{item}}"
       loop:
         - nomad.hcl
-        - nomad.env
       register: nomad_default_config_files_output
     - name: "Verificar que os arquivos padrão de configuração do Nomad foram removidos"
       assert:
@@ -41,7 +40,6 @@
           - "not nomad_default_config_files_output.results[{{index}}].stat.exists"
       loop:
         - nomad.hcl
-        - nomad.env
       loop_control:
         index_var: index
 
@@ -49,8 +47,9 @@
       stat:
         path: "/etc/nomad.d/{{item}}"
       loop:
-        - client.hcl.j2
-        - server.hcl.j2
+        - client.hcl.tpl
+        - server.hcl.tpl
+        - nomad.env
       register: nomad_config_files_output
     - name: "Verificar os arquivos de configuração do Nomad"
       assert:
@@ -59,8 +58,9 @@
           - "nomad_config_files_output.results[{{index}}].stat.pw_name == '{{nomad_user}}'"
           - "nomad_config_files_output.results[{{index}}].stat.gr_name == '{{nomad_group}}'"
       loop:
-        - client.hcl.j2
-        - server.hcl.j2
+        - client.hcl.tpl
+        - server.hcl.tpl
+        - nomad.env
       loop_control:
         index_var: index
 
@@ -68,8 +68,8 @@
       slurp:
         src: "/etc/nomad.d/{{item}}"
       loop:
-        - client.hcl.j2
-        - server.hcl.j2
+        - client.hcl.tpl
+        - server.hcl.tpl
       register: nomad_config_file_content
     - name: "Verificar conteúdo do arquivo de configuração do client"
       assert:
@@ -106,4 +106,3 @@
           - "{{ nomad_net_bridge_content.content | b64decode | regex_search('net.bridge.bridge-nf-call-arptables\\s*=\\s*1') | length }} > 0"
           - "{{ nomad_net_bridge_content.content | b64decode | regex_search('net.bridge.bridge-nf-call-ip6tables\\s*=\\s*1') | length }} > 0"
           - "{{ nomad_net_bridge_content.content | b64decode | regex_search('net.bridge.bridge-nf-call-iptables\\s*=\\s*1') | length }} > 0"
-
