@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# ./nomad_boostrap.sh [client|server|both] [bootstrap_expect] [retry_join]
-
 nomad_config_path=/etc/nomad.d
 
 help() {
