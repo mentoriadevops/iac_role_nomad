@@ -19,17 +19,21 @@
     state: absent
   loop:
     - nomad.hcl
-    - nomad.env
 - name: "Criando o arquivo de configuração"
   template:
-    src: "{{ item }}"
-    dest: /etc/nomad.d/
+    src: "{{ item }}.j2"
+    dest: "/etc/nomad.d/{{ item }}.tpl"
     owner: "{{ nomad_user }}"
     group: "{{ nomad_group }}"
     mode: 0644
   loop:
-    - client.hcl.j2
-    - server.hcl.j2
+    - client.hcl
+    - server.hcl
+- name: "Criando script de inicialização"
+  template:
+    src: nomad_bootstrap.sh
+    dest: /usr/local/bin/nomad_bootstrap.sh
+    mode: 0755
 
 # CNI-plugin
 
@@ -43,7 +47,7 @@
     dest: /opt/cni/bin
     creates: /opt/cni/bin/bridge
     remote_src: yes
-    mode: '0755'
+    mode: "0755"
 - name: " CNI sysctl"
   ansible.posix.sysctl:
     name: "{{ item }}"

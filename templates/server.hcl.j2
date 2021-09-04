@@ -1,7 +1,10 @@
 {% include "nomad.hcl.j2" %}
 
 server {
-  enabled          = true
-  bootstrap_expect = 3
-}
+  enabled          = <SERVER_ENABLED>
+  bootstrap_expect = <BOOTSTRAP_EXPECT>
 
+  server_join {
+    retry_join = [<RETRY_JOIN>]
+  }
+}
