@@ -28,12 +28,17 @@ exemplos:
 }
 
 main() {
-  local mode=$1
-  local bootstrap_expect=$2
-  local retry_join=${3:-'"127.0.0.1"'}
+  local mode="$1"
 
-  case "$mode" in
-    server | client | both)
+  case "${mode}" in
+    server)
+      render_server_config "${@:2}"
+      ;;
+    client)
+      render_client_config "${@:2}"
+      ;;
+    both)
+      render_both_config "${@:2}"
       ;;
     help | --help | -h)
       help
@@ -46,14 +51,6 @@ main() {
       ;;
   esac
 
-  if [[ "${mode}" == "server" ]] || [[ "${mode}" == "both" ]]; then
-    render_server_config $bootstrap_expect $retry_join
-  fi
-
-  if [[ "${mode}" == "client" ]] || [[ "${mode}" == "both" ]]; then
-    render_client_config $retry_join
-  fi
-
   echo "Habilitando e iniciando a unidade do Nomad no systemd..."
   systemctl enable nomad
   systemctl start nomad
@@ -63,8 +60,8 @@ main() {
 }
 
 render_server_config() {
-  local bootstrap_expect=$1
-  local retry_join=$2
+  local bootstrap_expect="$1"
+  local retry_join="${2:-\"127.0.0.1\"}"
 
   echo "Renderizando arquivo de configuração do server..."
 
@@ -77,18 +74,26 @@ render_server_config() {
     s/<SERVER_ENABLED>/true/
     s/<BOOTSTRAP_EXPECT>/${bootstrap_expect}/
     s/<RETRY_JOIN>/${retry_join}/
-  " ${nomad_config_path}/server.hcl.tpl > ${nomad_config_path}/server.hcl
+  " "${nomad_config_path}/server.hcl.tpl" > "${nomad_config_path}/server.hcl"
 }
 
 render_client_config() {
-  local retry_join=$1
+  local retry_join="${1:-\"127.0.0.1\"}"
 
   echo "Renderizando arquivo de configuração do client..."
 
   sed --expression "
     s/<CLIENT_ENABLED>/true/
     s/<RETRY_JOIN>/${retry_join}/
-  " ${nomad_config_path}/client.hcl.tpl > ${nomad_config_path}/client.hcl
+  " "${nomad_config_path}/client.hcl.tpl" > "${nomad_config_path}/client.hcl"
 }
 
-main $@
+render_both_config() {
+  local bootstrap_expect="$1"
+  local retry_join="${2:-\"127.0.0.1\"}"
+
+  render_server_config "${bootstrap_expect}" "${retry_join}"
+  render_client_config "${retry_join}"
+}
+
+main "$@"
