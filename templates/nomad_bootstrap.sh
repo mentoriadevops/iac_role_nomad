@@ -71,7 +71,6 @@ render_server_config() {
   fi
 
   sed --expression "
-    s/<SERVER_ENABLED>/true/
     s/<BOOTSTRAP_EXPECT>/${bootstrap_expect}/
     s/<RETRY_JOIN>/${retry_join}/
   " "${nomad_config_path}/server.hcl.tpl" > "${nomad_config_path}/server.hcl"
@@ -83,7 +82,6 @@ render_client_config() {
   echo "Renderizando arquivo de configuração do client..."
 
   sed --expression "
-    s/<CLIENT_ENABLED>/true/
     s/<RETRY_JOIN>/${retry_join}/
   " "${nomad_config_path}/client.hcl.tpl" > "${nomad_config_path}/client.hcl"
 }

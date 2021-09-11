@@ -1,7 +1,7 @@
 {% include "nomad.hcl.j2" %}
 
 client {
-  enabled = <CLIENT_ENABLED>
+  enabled = true
 
   server_join {
     retry_join = [<RETRY_JOIN>]
