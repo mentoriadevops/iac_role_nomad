@@ -22,6 +22,7 @@ jobs:
       - name: Run Linters
         run: |
           ansible-lint
+          shellcheck ./templates/nomad_bootstrap.sh
   molecule:
     runs-on: ubuntu-18.04
     strategy:
