@@ -6,6 +6,7 @@
   gather_facts: false
   vars_files:
     - ../../defaults/main.yml
+    - ../../vars/main.yml
   tasks:
     - name: "Roda um comando do Nomad"
       command: "nomad -version"
@@ -74,7 +75,13 @@
     - name: "Verificar conteúdo do arquivo de configuração do client"
       assert:
         that:
-          - "{{ nomad_config_file_content.results[0]['content'] | b64decode | regex_search('data_dir\\s+=\\s+\".+\"') | length }} > 0"
+          # Verificando que a configuração de data_dir está presente.
+          - "{{ nomad_config_file_content.results[0]['content'] | b64decode | regex_search(data_dir_regex) | length }} > 0"
+          # Verificando que a configuração de ACL está presente e com o valor correto.
+          - "{{ nomad_config_file_content.results[0]['content'] | b64decode | regex_search(acl_enabled_regex) | length }} > 0"
+      vars:
+        data_dir_regex: 'data_dir\s+=\s+".+"'
+        acl_enabled_regex: "acl\\s+{\\s+enabled\\s+=\\s+{{ nomad_acl_enabled_str }}"
 
     - name: "Ler data_dir do Nomad"
       stat:
