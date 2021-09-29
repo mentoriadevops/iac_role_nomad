@@ -6,6 +6,9 @@ O formato é baseado no [Mantenha um Changelog](https://keepachangelog.com/pt-BR
 e este projeto segue o [Versionamento Semântico](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
 ## [Não publicado]
+### Adicionado
+- Configuração para habilitar o sistema de ACL  [[GH-13](https://github.com/mentoriaiac/iac-role-nomad/pull/13)]
+
 ### Corrigido
 - Corrigido problemas ao ler atributos do script de bootstrap [[GH-8](https://github.com/mentoriaiac/iac-role-nomad/pull/8)]
 
