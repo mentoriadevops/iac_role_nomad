@@ -91,18 +91,8 @@
       stat:
         path: /opt/cni/bin/bridge
       register: nomad_cni_plugin_output
-    - name: " Verificar cni-plugin"
+    - name: "Verificar cni-plugin"
       assert:
         that:
           - nomad_cni_plugin_output.stat.exists
           - nomad_cni_plugin_output.stat.mode == '0755'
-    - name: "Ler conteúdo do arquivo de configuração 10-net-bridge.conf"
-      slurp:
-        src: "/etc/sysctl.d/10-net-bridge.conf"
-      register: nomad_net_bridge_content
-    - name: "Verificar conteúdo do arquivo de configuração do 10-net-bridge"
-      assert:
-        that:
-          - "{{ nomad_net_bridge_content.content | b64decode | regex_search('net.bridge.bridge-nf-call-arptables\\s*=\\s*1') | length }} > 0"
-          - "{{ nomad_net_bridge_content.content | b64decode | regex_search('net.bridge.bridge-nf-call-ip6tables\\s*=\\s*1') | length }} > 0"
-          - "{{ nomad_net_bridge_content.content | b64decode | regex_search('net.bridge.bridge-nf-call-iptables\\s*=\\s*1') | length }} > 0"
