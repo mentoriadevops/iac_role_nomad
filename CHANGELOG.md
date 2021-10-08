@@ -7,6 +7,10 @@ e este projeto segue o [Versionamento Semântico](https://semver.org/lang/pt-BR/
 
 ## [Não publicado]
 
+## [0.3.0] - 2021-09-08
+### Adicionado
+- Usar role de runtime [[CH-15]](https://github.com/mentoriaiac/iac_role_nomad/pull/15)
+
 ## [0.2.0] - 2021-09-08
 ### Adicionado
 - Configuração para habilitar o sistema de ACL  [[GH-13](https://github.com/mentoriaiac/iac_role_nomad/pull/13)]
