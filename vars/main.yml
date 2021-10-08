@@ -1,2 +1,4 @@
 ---
-# vars file for iac-role-nomad
+# nomad_acl_enabled_str sobrescreve a variável nomad_acl_enabled como uma string
+# com valor "true" ou "false" para evitar problemas com o tipo booleano do YAML.
+nomad_acl_enabled_str: "{{ nomad_acl_enabled | ternary('true', 'false') }}"
