@@ -1,6 +1,6 @@
 # Template Role Ansible
 
-![Pipeline Status](https://github.com/mentoriaiac/iac-role-nomad/actions/workflows/ci.yml/badge.svg) 
+![Pipeline Status](https://github.com/mentoriaiac/iac_role_nomad/actions/workflows/ci.yml/badge.svg) 
 
 Esse projeto tem a finalidade de ser uma Role Ansible para instalar o Nomad.
 
@@ -16,11 +16,11 @@ Para realizar os teste localmente é necessário a instalação das seguintes de
 ### Primeiro Passo:
 
 Clone este repositório, ele é a base da role do nomad.
-> git clone https://github.com/mentoria/iac-role-nomad
+> git clone https://github.com/mentoria/iac_role_nomad
 
 
 Ao final um diretório com a sua role será criado e você precisa agora entrar neste novo diretório. Para fazer isto use o comando a seguir:
-> cd iac-role-nomad
+> cd iac_role_nomad
 
 
 ### Segundo Passo

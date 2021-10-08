@@ -1,5 +1,5 @@
 ---
-# tasks file for iac-role-nomad
+# tasks file for iac_role_nomad
 - name: "Adicionando chave apt da HashiCorp"
   apt_key:
     url: https://apt.releases.hashicorp.com/gpg

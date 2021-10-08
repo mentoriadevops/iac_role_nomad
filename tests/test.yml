@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - iac-role-nomad
+    - iac_role_nomad
