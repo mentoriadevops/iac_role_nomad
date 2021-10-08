@@ -6,6 +6,8 @@ O formato é baseado no [Mantenha um Changelog](https://keepachangelog.com/pt-BR
 e este projeto segue o [Versionamento Semântico](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
 ## [Não publicado]
+
+## [0.2.0] - 2021-09-08
 ### Adicionado
 - Configuração para habilitar o sistema de ACL  [[GH-13](https://github.com/mentoriaiac/iac_role_nomad/pull/13)]
 
