@@ -1,13 +1,5 @@
 ---
 - name: Converge
   hosts: all
-  tasks:
-    - name: instalado GNU PG2
-      apt:
-        update_cache: yes
-        name: gnupg2
-        state: present
-
-    - name: "Include iac_role_nomad"
-      include_role:
-        name: "iac_role_nomad"
+  roles:
+    - iac_role_nomad
