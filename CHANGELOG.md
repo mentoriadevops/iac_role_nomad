@@ -7,17 +7,17 @@ e este projeto segue o [Versionamento Semântico](https://semver.org/lang/pt-BR/
 
 ## [Não publicado]
 ### Adicionado
-- Configuração para habilitar o sistema de ACL  [[GH-13](https://github.com/mentoriaiac/iac-role-nomad/pull/13)]
+- Configuração para habilitar o sistema de ACL  [[GH-13](https://github.com/mentoriaiac/iac_role_nomad/pull/13)]
 
 ### Corrigido
-- Corrigido problemas ao ler atributos do script de bootstrap [[GH-8](https://github.com/mentoriaiac/iac-role-nomad/pull/8)]
+- Corrigido problemas ao ler atributos do script de bootstrap [[GH-8](https://github.com/mentoriaiac/iac_role_nomad/pull/8)]
 
 ## [0.1.0] - 2021-09-04
 ### Adicionado
-- Instalação, configuração e testes do pacote do Nomad [[GH-2](https://github.com/mentoriaiac/iac-role-nomad/pull/2)]
-- Instalação dos plugins de CNI [[GH-5](https://github.com/mentoriaiac/iac-role-nomad/pull/5)]
-- Script de inicialização da imagem [[GH-6](https://github.com/mentoriaiac/iac-role-nomad/pull/6)]
+- Instalação, configuração e testes do pacote do Nomad [[GH-2](https://github.com/mentoriaiac/iac_role_nomad/pull/2)]
+- Instalação dos plugins de CNI [[GH-5](https://github.com/mentoriaiac/iac_role_nomad/pull/5)]
+- Script de inicialização da imagem [[GH-6](https://github.com/mentoriaiac/iac_role_nomad/pull/6)]
 
 
-[Não publicado]: https://github.com/mentoriaiac/iac-role-nomad/compare/0.1.0...HEAD
-[0.1.0]: https://github.com/mentoriaiac/iac-role-nomad/releases/tag/0.1.0
+[Não publicado]: https://github.com/mentoriaiac/iac_role_nomad/compare/0.1.0...HEAD
+[0.1.0]: https://github.com/mentoriaiac/iac_role_nomad/releases/tag/0.1.0

@@ -8,6 +8,6 @@
         name: gnupg2
         state: present
 
-    - name: "Include iac-role-nomad"
+    - name: "Include iac_role_nomad"
       include_role:
-        name: "iac-role-nomad"
+        name: "iac_role_nomad"
