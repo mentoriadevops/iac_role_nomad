@@ -25,5 +25,7 @@ e este projeto segue o [Versionamento Semântico](https://semver.org/lang/pt-BR/
 - Script de inicialização da imagem [[GH-6](https://github.com/mentoriaiac/iac_role_nomad/pull/6)]
 
 
-[Não publicado]: https://github.com/mentoriaiac/iac_role_nomad/compare/0.1.0...HEAD
-[0.1.0]: https://github.com/mentoriaiac/iac_role_nomad/releases/tag/0.1.0
+[Não publicado]: https://github.com/mentoriaiac/iac_role_nomad/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/mentoriaiac/iac_role_nomad/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/mentoriaiac/iac_role_nomad/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/mentoriaiac/iac_role_nomad/releases/tag/v0.1.0
