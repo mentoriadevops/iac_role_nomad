@@ -6,10 +6,12 @@ O formato é baseado no [Mantenha um Changelog](https://keepachangelog.com/pt-BR
 e este projeto segue o [Versionamento Semântico](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
 ## [Não publicado]
+### Adicionado
+- Configuração para telemetry e raft_protocol [[GH-23](https://github.com/mentoriaiac/iac_role_nomad/pull/23)]
 
 ## [0.3.0] - 2021-09-08
 ### Adicionado
-- Usar role de runtime [[CH-15]](https://github.com/mentoriaiac/iac_role_nomad/pull/15)
+- Usar role de runtime [[GH-15]](https://github.com/mentoriaiac/iac_role_nomad/pull/15)
 
 ## [0.2.0] - 2021-09-08
 ### Adicionado

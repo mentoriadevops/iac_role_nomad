@@ -76,12 +76,22 @@
       assert:
         that:
           # Verificando que a configuração de data_dir está presente.
-          - "{{ nomad_config_file_content.results[0]['content'] | b64decode | regex_search(data_dir_regex) | length }} > 0"
+          - "{{ nomad_config_file_content.results[0]['content'] | b64decode | regex_search(data_dir_regex, multiline=True) | length }} > 0"
+          - "{{ nomad_config_file_content.results[1]['content'] | b64decode | regex_search(data_dir_regex, multiline=True) | length }} > 0"
           # Verificando que a configuração de ACL está presente e com o valor correto.
-          - "{{ nomad_config_file_content.results[0]['content'] | b64decode | regex_search(acl_enabled_regex) | length }} > 0"
+          - "{{ nomad_config_file_content.results[0]['content'] | b64decode | regex_search(acl_enabled_regex, multiline=True) | length }} > 0"
+          - "{{ nomad_config_file_content.results[1]['content'] | b64decode | regex_search(acl_enabled_regex, multiline=True) | length }} > 0"
+          # Verificando que a configuração de telemetry está presente.
+          - "{{ nomad_config_file_content.results[0]['content'] | b64decode | regex_search(telemetry_regex, multiline=True) | length }} > 0"
+          - "{{ nomad_config_file_content.results[1]['content'] | b64decode | regex_search(telemetry_regex, multiline=True) | length }} > 0"
+          # Verificando que a configuração de raft_protocol está presente e com valor correto.
+          - "{{ nomad_config_file_content.results[1]['content'] | b64decode | regex_search(raft_protocol_regex, multiline=True) | length }} > 0"
+
       vars:
-        data_dir_regex: 'data_dir\s+=\s+".+"'
-        acl_enabled_regex: "acl\\s+{\\s+enabled\\s+=\\s+{{ nomad_acl_enabled_str }}"
+        data_dir_regex: '^data_dir\s+=\s+".+"'
+        acl_enabled_regex: "^acl\\s+{\\s+enabled\\s+=\\s+{{ nomad_acl_enabled_str }}"
+        telemetry_regex: '^telemetry\s+{\s+'
+        raft_protocol_regex: '^\s*raft_protocol\s+=\s+3'
 
     - name: "Ler data_dir do Nomad"
       stat:

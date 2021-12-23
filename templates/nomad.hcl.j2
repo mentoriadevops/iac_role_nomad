@@ -4,3 +4,8 @@ bind_addr = "0.0.0.0" # the default
 acl {
   enabled = {{ nomad_acl_enabled_str }}
 }
+
+telemetry {
+  disable_hostname   = true
+  prometheus_metrics = true
+}
