@@ -4,7 +4,7 @@ nomad_config_path=/etc/nomad.d
 
 help() {
   echo "
-uso: nomad_boostrap.sh [-h|--help] mode [bootstrap_expect] [rety_join]
+uso: nomad_boostrap.sh [-h|--help] mode [bootstrap_expect] [rety_join] [region] [datacenter]
 
 Inicializa os arquivos de configuração do Nomad e habilita a unidade do Nomad no systemd.
 
@@ -15,7 +15,8 @@ argumentos opcionais:
   --help, -h, help       imprime essa mensagem de ajuda.
   bootstrap_expect       número de servidores no cluster.
   retry_join             lista de IPs ou configuração do cloud auto-join.
-
+  region                 região do agente Nomad 
+  datacenter             datacenter do agente Nomad
 
 exemplos:
   Iniciar cluster local com client e servidor:
@@ -62,6 +63,8 @@ main() {
 render_server_config() {
   local bootstrap_expect="$1"
   local retry_join="${2:-\"127.0.0.1\"}"
+  local region="${3:-global}"
+  local datacenter="${4:-dc1}"
 
   echo "Renderizando arquivo de configuração do server..."
 
@@ -73,25 +76,33 @@ render_server_config() {
   sed --expression "
     s/<BOOTSTRAP_EXPECT>/${bootstrap_expect}/
     s/<RETRY_JOIN>/${retry_join}/
+    s/<REGION>/${region}/
+    s/<DATACENTER>/${datacenter}/
   " "${nomad_config_path}/server.hcl.tpl" > "${nomad_config_path}/server.hcl"
 }
 
 render_client_config() {
   local retry_join="${1:-\"127.0.0.1\"}"
+  local region="${2:-global}"
+  local datacenter="${3:-dc1}"
 
   echo "Renderizando arquivo de configuração do client..."
 
   sed --expression "
     s/<RETRY_JOIN>/${retry_join}/
+    s/<REGION>/${region}/
+    s/<DATACENTER>/${datacenter}/
   " "${nomad_config_path}/client.hcl.tpl" > "${nomad_config_path}/client.hcl"
 }
 
 render_both_config() {
   local bootstrap_expect="$1"
   local retry_join="${2:-\"127.0.0.1\"}"
+  local region="${3:-global}"
+  local datacenter="${4:-dc1}"
 
-  render_server_config "${bootstrap_expect}" "${retry_join}"
-  render_client_config "${retry_join}"
+  render_server_config "${bootstrap_expect}" "${retry_join}" "${region}" "${datacenter}"
+  render_client_config "${retry_join}" "${region}" "${datacenter}"
 }
 
 main "$@"

@@ -1,6 +1,9 @@
 data_dir  = "/opt/nomad/data"
 bind_addr = "0.0.0.0" # the default
 
+region = "<REGION>"
+datacenter = "<DATACENTER>"
+
 acl {
   enabled = {{ nomad_acl_enabled_str }}
 }

@@ -8,6 +8,7 @@ e este projeto segue o [Versionamento Semântico](https://semver.org/lang/pt-BR/
 ## [Não publicado]
 ### Adicionado
 - Configuração para telemetry e raft_protocol [[GH-23](https://github.com/mentoriaiac/iac_role_nomad/pull/23)]
+- Configuração para region e datacenter [[GH-24](https://github.com/mentoriaiac/iac_role_nomad/pull/24)]
 
 ## [0.3.0] - 2021-09-08
 ### Adicionado

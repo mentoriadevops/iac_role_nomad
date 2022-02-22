@@ -113,3 +113,96 @@
         that:
           - nomad_cni_plugin_output.stat.exists
           - nomad_cni_plugin_output.stat.mode == '0755'
+
+    - name: "Roda o script de bootstrap em modo client"
+      command: "/usr/local/bin/nomad_bootstrap.sh client '\"127.0.0.1\"' brasil mentoria"
+      register: nomad_bootstrap_client_output
+    - name: "Ler conteúdo do arquivo de configuração do cliente"
+      slurp:
+        src: "/etc/nomad.d/client.hcl"
+      register: nomad_client_config_file_content
+    - name: "Verificar que o script de bootstrap renderizou o arquivo de configuração do cliente"
+      assert:
+        that:
+          - nomad_bootstrap_client_output.rc == 0
+          # Verificando que a configuração de retry_join está presente.
+          - "{{ nomad_client_config_file_content['content'] | b64decode | regex_search(retry_join_regex, multiline=True) | length }} > 0"
+          # Verificando que a configuração de region está presente e com o valor correto.
+          - "{{ nomad_client_config_file_content['content'] | b64decode | regex_search(region_regex, multiline=True) | length }} > 0"
+          # Verificando que a configuração de datacenter está presente e com o valor correto.
+          - "{{ nomad_client_config_file_content['content'] | b64decode | regex_search(datacenter_regex, multiline=True) | length }} > 0"
+      vars:
+        retry_join_regex: '^\s*retry_join\s+=\s+\[\"127\.0\.0\.1\"\]'
+        region_regex: '^region\s+=\s+\"brasil\"$'
+        datacenter_regex: '^datacenter\s+=\s+\"mentoria\"$'
+    - name: "Limpar arquivo de configuração do cliente"
+      file:
+        path: "/etc/nomad.d/client.hcl"
+        state: "absent"
+
+    - name: "Roda o script de bootstrap em modo server"
+      command: "/usr/local/bin/nomad_bootstrap.sh server 1 '\"127.0.0.1\"' brasil mentoria"
+      register: nomad_bootstrap_server_output
+    - name: "Ler conteúdo do arquivo de configuração do server"
+      slurp:
+        src: "/etc/nomad.d/server.hcl"
+      register: nomad_server_config_file_content
+    - name: "Verificar que o script de bootstrap renderizou o arquivo de configuração do server"
+      assert:
+        that:
+          - nomad_bootstrap_server_output.rc == 0
+          # Verificando que a configuração de bootrap_expect está presente.
+          - "{{ nomad_server_config_file_content['content'] | b64decode | regex_search(bootstrap_expect_regex, multiline=True) | length }} > 0"
+          # Verificando que a configuração de retry_join está presente.
+          - "{{ nomad_server_config_file_content['content'] | b64decode | regex_search(retry_join_regex, multiline=True) | length }} > 0"
+          # Verificando que a configuração de region está presente e com o valor correto.
+          - "{{ nomad_server_config_file_content['content'] | b64decode | regex_search(region_regex, multiline=True) | length }} > 0"
+          # Verificando que a configuração de datacenter está presente e com o valor correto.
+          - "{{ nomad_server_config_file_content['content'] | b64decode | regex_search(datacenter_regex, multiline=True) | length }} > 0"
+      vars:
+        bootstrap_expect_regex: '^\s*bootstrap_expect\s+=\s+1$'
+        retry_join_regex: '^\s*retry_join\s+=\s+\[\"127\.0\.0\.1\"\]'
+        region_regex: '^region\s+=\s+\"brasil\"$'
+        datacenter_regex: '^datacenter\s+=\s+\"mentoria\"$'
+    - name: "Limpar arquivo de configuração do server"
+      file:
+        path: "/etc/nomad.d/server.hcl"
+        state: "absent"
+
+    - name: "Roda o script de bootstrap em modo both"
+      command: "/usr/local/bin/nomad_bootstrap.sh both 1 '\"127.0.0.1\"' brasil mentoria"
+      register: nomad_bootstrap_both_output
+    - name: "Ler conteúdo do arquivo de configuração do cliente e server"
+      slurp:
+        src: "/etc/nomad.d/{{item}}.hcl"
+      loop:
+        - client
+        - server
+      register: nomad_both_config_file_content
+    - name: "Verificar que o script de bootstrap renderizou os arquivos  de configuração do cliente e server"
+      assert:
+        that:
+          - nomad_bootstrap_both_output.rc == 0
+          # Verificando que a configuração de bootrap_expect está presente.
+          - "{{ nomad_both_config_file_content.results[1]['content'] | b64decode | regex_search(bootstrap_expect_regex, multiline=True) | length }} > 0"
+          # Verificando que a configuração de retry_join está presente.
+          - "{{ nomad_both_config_file_content.results[0]['content'] | b64decode | regex_search(retry_join_regex, multiline=True) | length }} > 0"
+          - "{{ nomad_both_config_file_content.results[1]['content'] | b64decode | regex_search(retry_join_regex, multiline=True) | length }} > 0"
+          # Verificando que a configuração de region está presente e com o valor correto.
+          - "{{ nomad_both_config_file_content.results[0]['content'] | b64decode | regex_search(region_regex, multiline=True) | length }} > 0"
+          - "{{ nomad_both_config_file_content.results[1]['content'] | b64decode | regex_search(region_regex, multiline=True) | length }} > 0"
+          # Verificando que a configuração de datacenter está presente e com o valor correto.
+          - "{{ nomad_both_config_file_content.results[0]['content'] | b64decode | regex_search(datacenter_regex, multiline=True) | length }} > 0"
+          - "{{ nomad_both_config_file_content.results[1]['content'] | b64decode | regex_search(datacenter_regex, multiline=True) | length }} > 0"
+      vars:
+        bootstrap_expect_regex: '^\s*bootstrap_expect\s+=\s+1$'
+        retry_join_regex: '^\s*retry_join\s+=\s+\[\"127\.0\.0\.1\"\]'
+        region_regex: '^region\s+=\s+\"brasil\"$'
+        datacenter_regex: '^datacenter\s+=\s+\"mentoria\"$'
+    - name: "Limpar arquivo de configuração do cliente e server"
+      file:
+        path: "/etc/nomad.d/{{item}}.hcl"
+        state: "absent"
+      loop:
+        - client
+        - server
