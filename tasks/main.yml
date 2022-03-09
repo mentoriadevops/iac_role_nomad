@@ -31,8 +31,8 @@
     - server.hcl
 - name: "Criando script de inicialização"
   template:
-    src: nomad_bootstrap.sh
-    dest: /usr/local/bin/nomad_bootstrap.sh
+    src: nomad_bootstrap.py
+    dest: /usr/local/bin/nomad_bootstrap.py
     mode: 0755
 
 # CNI-plugin

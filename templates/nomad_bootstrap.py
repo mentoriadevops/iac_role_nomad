@@ -35,7 +35,8 @@ def validate_args(args):
         return False
     return True
 
-epilog = """
+
+EPILOG = """
 Exemplos:
     Iniciar cluster local com client e servidor:
         nomad_boostrap.py both -b 1
@@ -46,13 +47,13 @@ Exemplos:
 """
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, epilog=epilog)
-
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter, epilog=EPILOG)
 
     parser.add_argument('mode', help='Modo de execução do nomad', choices=[
                         'server', 'client', 'both'])
     parser.add_argument('--bootstrap-expect', '-b',
-                        help='Número de nodes do servidor a aguardar antes de inicializar.', type=int)
+                    help='Número de nodes do servidor a aguardar antes de inicializar', type=int)
     parser.add_argument('--retry-join', '-r', help='',
                         type=str, default='127.0.0.1')
     parser.add_argument('--nomad_path', help='Caminho do nomad',
@@ -60,10 +61,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if not validate_args(args):
-        exit(1)
+        sys.exit(1)
 
     if args.mode == 'server':
-         
+
         server(args.bootstrap_expect, f'"{args.retry_join}"', args.nomad_path)
     elif args.mode == 'client':
         client(f'"{args.retry_join}"', args.nomad_path)
