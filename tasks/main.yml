@@ -11,7 +11,7 @@
     update_cache: yes
 - name: "Instalando Nomad"
   apt:
-    name: "nomad={{ nomad_version }}"
+    name: "nomad={{ nomad_version }}-1"
     state: present
 - name: "Removendo arquivos padrão de exemplo"
   file:
