@@ -10,6 +10,10 @@ e este projeto segue o [Versionamento Semântico](https://semver.org/lang/pt-BR/
 - Configuração para telemetry e raft_protocol [[GH-23](https://github.com/mentoriaiac/iac_role_nomad/pull/23)]
 - Configuração para region e datacenter [[GH-24](https://github.com/mentoriaiac/iac_role_nomad/pull/24)]
 
+### Modificado
+- Atualizando a versão padrão do Nomad para 1.3.1 [[GH-26](https://github.com/mentoriaiac/iac_role_nomad/pull/26)]
+
+
 ## [0.3.0] - 2021-09-08
 ### Adicionado
 - Usar role de runtime [[GH-15]](https://github.com/mentoriaiac/iac_role_nomad/pull/15)
