@@ -65,6 +65,9 @@ render_server_config() {
   local retry_join="${2:-\"127.0.0.1\"}"
   local region="${3:-global}"
   local datacenter="${4:-dc1}"
+  local ca_secret="$5"
+  local server_cert_secret="$6"
+  local server_key_secret="$7"
 
   echo "Renderizando arquivo de configuração do server..."
 
@@ -79,12 +82,19 @@ render_server_config() {
     s/<REGION>/${region}/
     s/<DATACENTER>/${datacenter}/
   " "${nomad_config_path}/server.hcl.tpl" > "${nomad_config_path}/server.hcl"
+
+  google_secret "$(echo $ca_secret | cut -d: -f1)" "$(echo $ca_secret | cut -d: -f2)" "/etc/nomad.d/certs/nomad-ca.pem"
+  google_secret "$(echo $server_cert_secret | cut -d: -f1)" "$(echo $server_cert_secret | cut -d: -f2)" "/etc/nomad.d/certs/server.pem"
+  google_secret "$(echo $server_key_secret | cut -d: -f1)" "$(echo $server_key_secret | cut -d: -f2)" "/etc/nomad.d/certs/server-key.pem"
 }
 
 render_client_config() {
   local retry_join="${1:-\"127.0.0.1\"}"
   local region="${2:-global}"
   local datacenter="${3:-dc1}"
+  local ca_secret="$4"
+  local client_cert_secret="$5"
+  local client_key_secret="$6"
 
   echo "Renderizando arquivo de configuração do client..."
 
@@ -93,6 +103,10 @@ render_client_config() {
     s/<REGION>/${region}/
     s/<DATACENTER>/${datacenter}/
   " "${nomad_config_path}/client.hcl.tpl" > "${nomad_config_path}/client.hcl"
+
+  google_secret "$(echo $ca_secret | cut -d: -f1)" "$(echo $ca_secret | cut -d: -f2)" "/etc/nomad.d/certs/nomad-ca.pem"
+  google_secret "$(echo $client_cert_secret | cut -d: -f1)" "$(echo $client_cert_secret | cut -d: -f2)" "/etc/nomad.d/certs/client.pem"
+  google_secret "$(echo $client_key_secret | cut -d: -f1)" "$(echo $client_key_secret | cut -d: -f2)" "/etc/nomad.d/certs/client-key.pem"
 }
 
 render_both_config() {
@@ -103,6 +117,14 @@ render_both_config() {
 
   render_server_config "${bootstrap_expect}" "${retry_join}" "${region}" "${datacenter}"
   render_client_config "${retry_join}" "${region}" "${datacenter}"
+}
+
+google_secret() {
+  local secret="$1"
+  local version="$2"
+  local path="$3"
+
+  gcloud secrets versions access "$version" --secret="$secret" > "$path"
 }
 
 main "$@"

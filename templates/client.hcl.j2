@@ -7,3 +7,13 @@ client {
     retry_join = [<RETRY_JOIN>]
   }
 }
+
+tls {
+  ca_file = "/etc/nomad.d/certs/nomad-ca.pem"
+  cert_file = "/etc/nomad.d/certs/client.pem"
+  key_file = "/etc/nomad.d/certs/client-key.pem"
+  http = true
+  rpc = true
+  verify_https_client = true
+  verify_server_hostname = true
+}
