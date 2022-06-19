@@ -1,53 +1,12 @@
----
-name: CI
+name: "Valida role ansible"
+  
 on:
   push:
+    branches:
+      - main
   pull_request:
 jobs:
-  linter:
-    runs-on: ubuntu-18.04
-    strategy:
-      matrix:
-        python-version: [3.9]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install -r requirements.txt
-      - name: Run Linters
-        run: |
-          ansible-lint
-          shellcheck ./templates/nomad_bootstrap.sh
-  molecule:
-    runs-on: ubuntu-18.04
-    strategy:
-      matrix:
-        python_version: [3.9]
-        molecule_distro: [ubuntu1804, ubuntu2004]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: |
-          python3 -m pip install --upgrade pip setuptools
-          python3 -m pip install -r requirements.txt
-      - name: Force GitHub Actions' docker daemon to use vfs.
-        run: |
-          sudo systemctl stop docker
-          echo '{"cgroup-parent":"/actions_job","storage-driver":"vfs"}' | sudo tee /etc/docker/daemon.json
-          sudo systemctl start docker
-      - name: Test with molecule
-        run: |
-          molecule test --all
-        env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
-          MOLECULE_DISTRO: ${{ matrix.molecule_distro }}
+  valida:
+    uses: "mentoriaiac/cicd_centralizado/.github/workflows/ansible_valida_role.yaml@v1"
+    secrets:
+      token: ${{ secrets.TOKEN }}
