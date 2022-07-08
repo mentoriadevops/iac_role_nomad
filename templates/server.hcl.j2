@@ -3,7 +3,6 @@
 server {
   enabled          = true
   bootstrap_expect = <BOOTSTRAP_EXPECT>
-  raft_protocol = 3
 
   server_join {
     retry_join = [<RETRY_JOIN>]
@@ -11,11 +10,11 @@ server {
 }
 
 tls {
-  ca_file = "/etc/nomad.d/certs/nomad-ca.pem"
-  cert_file = "/etc/nomad.d/certs/server.pem"
-  key_file = "/etc/nomad.d/certs/server-key.pem"
-  http = true
-  rpc = true
-  verify_https_client = true
+  ca_file                = "/etc/nomad.d/certs/nomad-ca.pem"
+  cert_file              = "/etc/nomad.d/certs/server.pem"
+  key_file               = "/etc/nomad.d/certs/server-key.pem"
+  http                   = true
+  rpc                    = true
+  verify_https_client    = true
   verify_server_hostname = true
 }
