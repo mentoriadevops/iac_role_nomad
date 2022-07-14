@@ -1,5 +1,5 @@
 ---
-# tasks file for iac_role_nomad
+# Instalação
 - name: "Adicionando chave apt da HashiCorp"
   apt_key:
     url: https://apt.releases.hashicorp.com/gpg
@@ -13,6 +13,8 @@
   apt:
     name: "nomad={{ nomad_version }}-{{ nomad_package_version }}"
     state: present
+
+# Configuração
 - name: "Removendo arquivos padrão de exemplo"
   file:
     path: "/etc/nomad.d/{{ item }}"
@@ -29,19 +31,25 @@
   loop:
     - client.hcl
     - server.hcl
+- name: "Criando diretório dos certificados de mTLS"
+  file:
+    path: "/etc/nomad.d/certs/"
+    state: directory
+    owner: "{{ nomad_user }}"
+    group: "{{ nomad_group }}"
+    mode: 0700
 - name: "Criando script de inicialização"
   template:
     src: nomad_bootstrap.sh
     dest: /usr/local/bin/nomad_bootstrap.sh
     mode: 0755
 
-# CNI-plugin
-
-- name: "Criando Diretorio para os plugins-CNI"
+# Plugins CNI
+- name: "Criando Diretorio para os plugins CNI"
   ansible.builtin.file:
     path: /opt/cni/bin
     state: directory
-- name: "CNI-plugin | unarchive"
+- name: "Download dos plugins CNI"
   ansible.builtin.unarchive:
     src: "{{ nomad_cni_url }}"
     dest: /opt/cni/bin

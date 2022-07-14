@@ -1,2 +1,6 @@
 mol-venv/
 .cache/
+.venv/
+
+Vagrantfile
+.vagrant/

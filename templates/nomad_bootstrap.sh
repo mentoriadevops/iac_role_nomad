@@ -4,7 +4,7 @@ nomad_config_path=/etc/nomad.d
 
 help() {
   echo "
-uso: nomad_boostrap.sh [-h|--help] mode [bootstrap_expect] [rety_join] [region] [datacenter]
+uso: nomad_boostrap.sh [-h|--help] mode [bootstrap_expect] [rety_join] [region] [datacenter] [secrets]
 
 Inicializa os arquivos de configuração do Nomad e habilita a unidade do Nomad no systemd.
 
@@ -15,8 +15,9 @@ argumentos opcionais:
   --help, -h, help       imprime essa mensagem de ajuda.
   bootstrap_expect       número de servidores no cluster.
   retry_join             lista de IPs ou configuração do cloud auto-join.
-  region                 região do agente Nomad 
+  region                 região do agente Nomad
   datacenter             datacenter do agente Nomad
+  secrets                segredos que serão colocados na máquina
 
 exemplos:
   Iniciar cluster local com client e servidor:
@@ -25,6 +26,10 @@ exemplos:
   Iniciar cluster no GCP com cloud auto-join:
     nomad_boostrap.sh server 3 '\"provider=gce project_name=meu-projeto tag_value=nomad-server\"'
     nomad_boostrap.sh client '\"provider=gce project_name=meu-projeto tag_value=nomad-server\"'
+
+  Iniciar cluster configurado com mTLS
+    nomad_boostrap.sh server 3 '\"provider=gce project_name=meu-projeto tag_value=nomad-server\"' global dc1 nomad-ca:1 nomad-server-cert:2 nomad-server-key:1
+    nomad_boostrap.sh client '\"provider=gce project_name=meu-projeto tag_value=nomad-server\"' global dc1 nomad-ca:1 nomad-client-cert:2 nomad-client-key:1
 "
 }
 
@@ -125,6 +130,7 @@ google_secret() {
   local path="$3"
 
   gcloud secrets versions access "$version" --secret="$secret" > "$path"
+  chmod 400 "$path"
 }
 
 main "$@"
