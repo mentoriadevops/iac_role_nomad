@@ -1,6 +1,4 @@
 ---
-# This is an example playbook to execute Ansible tests.
-
 - name: Verify
   hosts: all
   gather_facts: false
@@ -17,17 +15,25 @@
           - nomad_version_output.rc == 0
           - "'{{nomad_version}}' in nomad_version_output.stdout"
 
-    - name: "Ler diretório de configuração do Nomad"
+    - name: "Ler diretórios de configuração do Nomad"
       stat:
-        path: /etc/nomad.d/
+        path: "{{item}}"
+      loop:
+        - /etc/nomad.d/
+        - /etc/nomad.d/certs/
       register: nomad_config_dir_output
-    - name: "Verificar o diretório de configuração do Nomad"
+    - name: "Verificar os diretórios de configuração do Nomad"
       assert:
         that:
-          - nomad_config_dir_output.stat.exists
-          - nomad_config_dir_output.stat.isdir
-          - "nomad_config_dir_output.stat.pw_name == '{{nomad_user}}'"
-          - "nomad_config_dir_output.stat.gr_name == '{{nomad_group}}'"
+          - "nomad_config_dir_output.results[{{index}}].stat.exists"
+          - "nomad_config_dir_output.results[{{index}}].stat.isdir"
+          - "nomad_config_dir_output.results[{{index}}].stat.pw_name == '{{nomad_user}}'"
+          - "nomad_config_dir_output.results[{{index}}].stat.gr_name == '{{nomad_group}}'"
+      loop:
+        - /etc/nomad.d/
+        - /etc/nomad.d/certs/
+      loop_control:
+        index_var: index
 
     - name: "Ler arquivos padrão de configuração do Nomad"
       stat:
@@ -84,14 +90,11 @@
           # Verificando que a configuração de telemetry está presente.
           - "{{ nomad_config_file_content.results[0]['content'] | b64decode | regex_search(telemetry_regex, multiline=True) | length }} > 0"
           - "{{ nomad_config_file_content.results[1]['content'] | b64decode | regex_search(telemetry_regex, multiline=True) | length }} > 0"
-          # Verificando que a configuração de raft_protocol está presente e com valor correto.
-          - "{{ nomad_config_file_content.results[1]['content'] | b64decode | regex_search(raft_protocol_regex, multiline=True) | length }} > 0"
 
       vars:
         data_dir_regex: '^data_dir\s+=\s+".+"'
         acl_enabled_regex: "^acl\\s+{\\s+enabled\\s+=\\s+{{ nomad_acl_enabled_str }}"
         telemetry_regex: '^telemetry\s+{\s+'
-        raft_protocol_regex: '^\s*raft_protocol\s+=\s+3'
 
     - name: "Ler data_dir do Nomad"
       stat:

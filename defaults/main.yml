@@ -10,3 +10,4 @@ nomad_cni_url: "https://github.com/containernetworking/plugins/releases/download
 
 # Configurações de ACL
 nomad_acl_enabled: true
+nomad_mtls_enabled: true

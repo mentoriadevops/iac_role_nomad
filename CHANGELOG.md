@@ -13,6 +13,8 @@ e este projeto segue o [Versionamento Semântico](https://semver.org/lang/pt-BR/
 ### Modificado
 - Atualizando a versão padrão do Nomad para 1.3.1 [[GH-26](https://github.com/mentoriaiac/iac_role_nomad/pull/26)]
 
+### Corrigido
+- Criação da pasta para chaves e certificados mTLS [[GH-29](https://github.com/mentoriaiac/iac_role_nomad/pull/29)]
 
 ## [0.3.0] - 2021-09-08
 ### Adicionado
