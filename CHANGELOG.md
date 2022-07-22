@@ -9,6 +9,7 @@ e este projeto segue o [Versionamento Semântico](https://semver.org/lang/pt-BR/
 ### Adicionado
 - Configuração para telemetry e raft_protocol [[GH-23](https://github.com/mentoriaiac/iac_role_nomad/pull/23)]
 - Configuração para region e datacenter [[GH-24](https://github.com/mentoriaiac/iac_role_nomad/pull/24)]
+- Definição de modo de acesso para a pasta de plugins CNI [[GH-31](https://github.com/mentoriaiac/iac_role_nomad/pull/31)]
 
 ### Modificado
 - Atualizando a versão padrão do Nomad para 1.3.1 [[GH-26](https://github.com/mentoriaiac/iac_role_nomad/pull/26)]

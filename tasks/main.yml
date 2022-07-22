@@ -49,6 +49,7 @@
   ansible.builtin.file:
     path: /opt/cni/bin
     state: directory
+    mode: 0755
 - name: "Download dos plugins CNI"
   ansible.builtin.unarchive:
     src: "{{ nomad_cni_url }}"
