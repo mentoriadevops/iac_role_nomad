@@ -7,6 +7,10 @@ e este projeto segue o [Versionamento Semântico](https://semver.org/lang/pt-BR/
 
 ## [Não publicado]
 
+### Corrigido
+
+- Atualizando versão da role iac_role_runtime para 0.2.0 no `meta/main.yml` [[GH-33](https://github.com/mentoriaiac/iac_role_nomad/pull/33)]
+
 ## [0.4.0] - 2022-07-22
 
 ### Adicionado
